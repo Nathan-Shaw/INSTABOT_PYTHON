@@ -1,1 +1,44 @@
+import os 
+import glob
+import pandas as pd
+
+# Clear cookies to prevent login errors from the API
+cookie_del = glob.glob("config/*cookie.json")
+os.remove(cookie_del[0])
+
+# Check your current directory:
+print(os.getcwd())
+# Specify the correct directory as needed:
+desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+python_folder_path = os.path.join(desktop_path, "INSERT YOUR FOLDER NAME HERE")
+folder_path = os.path.join(python_folder_path, "INSERT YOUR SUBFOLDER NAME HERE IF NEEDED")
+
+#import bot and login
+from instabot import Bot
+bot = Bot()
+bot.logout
+  #This ensures a successful login each time you run the program.
+  # If not logged out properly, the connection fails.
+bot.login(username='USERNAME',password='PASSWORD')
+
+#This sets the variables the bot refers to based on the specified directory path:
+directory = folder_path
+
+#This sets the caption to pair with the image:
+try:
+    caption_df = pd.read_csv('INSERT_CAPTION_DOC_NAME.csv')
+    caption = caption_df['caption_column_name'].values[0]  #Adjust column name as per your CSV
+except FileNotFoundError:
+    caption = None
+
+#If a pre-made caption is not available, you can type it manually here:
+if caption is None:
+    caption = 'INSERT CAPTION'
+
+# Upload photo with caption
+photo_path = "INSERT_IMAGE_NAME.jpg"
+bot.upload_photo(photo_path, caption=caption)
+
+#Check your ig account to confirm it worked as expected.
+#Voila!
 
